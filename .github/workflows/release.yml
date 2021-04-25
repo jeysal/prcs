@@ -1,0 +1,44 @@
+name: release
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cargo login ${{ secrets.CRATES_IO_TOKEN }}
+      - run: cargo publish
+  release:
+    strategy:
+      matrix:
+        name: [linux, macos, windows]
+        include:
+          - name: linux
+            os: ubuntu-latest
+            artifact_name: target/release/prcs
+            asset_name: prcs-linux
+          - name: macos
+            os: macos-latest
+            artifact_name: target/release/prcs
+            asset_name: prcs-macos
+          - name: windows
+            os: windows-latest
+            artifact_name: target/release/prcs.exe
+            asset_name: prcs-windows.exe
+    runs-on: ${{ matrix.os }}
+    name: release-${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+      - run: cp ${{ matrix.artifact_name }} ${{ matrix.asset_name }}
+        shell: bash
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ matrix.asset_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
