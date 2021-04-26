@@ -15,7 +15,7 @@ With [Cargo](https://github.com/rust-lang/cargo):
 cargo install prcs
 ```
 
-Or [download binary releases](releases) directly.
+Or [download binary releases](https://github.com/jeysal/prcs/releases) directly.
 
 ## Features
 
