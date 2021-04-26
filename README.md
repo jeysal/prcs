@@ -2,8 +2,8 @@
 
 > The Swiss Army knife for running processes
 
-![Version](https://img.shields.io/crates/v/prcs?style=flat-square)
-![License](https://img.shields.io/crates/l/prcs?style=flat-square)
+[![Version](https://img.shields.io/crates/v/prcs?style=flat-square)](https://crates.io/crates/prcs)
+[![License](https://img.shields.io/crates/l/prcs?style=flat-square)](LICENSE.txt)
 
 Note: This project is not yet very useful or well-documented.
 
