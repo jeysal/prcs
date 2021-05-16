@@ -5,9 +5,10 @@ pub fn handle<F>(opts: &Opts, delegate: F) -> StatusCode
 where
     F: Fn() -> StatusCode,
 {
-    let child_status = delegate();
-    if opts.stall.iter().any(|stall| stall.matches(child_status)) {
-        std::thread::park()
+    loop {
+        let child_status = delegate();
+        if !opts.rerun.iter().any(|rerun| rerun.matches(child_status)) {
+            return child_status;
+        }
     }
-    child_status
 }
