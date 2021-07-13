@@ -7,7 +7,9 @@ where
 {
     let child_status = delegate();
     if opts.stall.iter().any(|stall| stall.matches(child_status)) {
-        std::thread::park()
+        loop {
+            std::thread::park()
+        }
     }
     child_status
 }
