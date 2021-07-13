@@ -22,7 +22,7 @@ Or [download binary releases](https://github.com/jeysal/prcs/releases) directly.
 | Feature                         | Implemented |
 | ------------------------------- | ----------- |
 | Stall                           | ✅          |
-| Re-run                          |             |
+| Re-run                          | ✅          |
 | Translate/swallow signals       |             |
 | Logrotate                       |             |
 | Empty closing/non-closing stdin |             |

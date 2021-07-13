@@ -31,9 +31,6 @@ fn does_not_stall_if_status_does_not_match() {
 
 #[test]
 fn stalls_if_status_matches() {
-    const SLEEP_DURATION: Duration = Duration::from_millis(10);
-    const SLEEP_ATTEMPS: u32 = 100;
-
     let mut child = Command::new(env!("CARGO_BIN_EXE_prcs"))
         .arg("-s=>=100")
         .args(&shell_command("echo text && exit 123"))
@@ -47,9 +44,8 @@ fn stalls_if_status_matches() {
         child_stdout.read(&mut output).unwrap();
         if &output == b"text" {
             sleep(SLEEP_DURATION);
-            if child.try_wait().unwrap().is_none() {
-                return;
-            }
+            assert!(child.try_wait().unwrap().is_none());
+            return;
         }
         sleep(SLEEP_DURATION);
     }
