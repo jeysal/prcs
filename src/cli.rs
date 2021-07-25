@@ -1,3 +1,4 @@
+use super::signal_mapping::{parse_signal_mapping, SignalMapping};
 use super::status_constraints::{parse_status_constraints, StatusConstraint};
 use clap::Clap;
 
@@ -29,6 +30,26 @@ pub struct Opts {
         "
     )]
     pub rerun: Option<Vec<Vec<StatusConstraint>>>,
+    #[cfg(target_family = "unix")]
+    #[clap(
+        long,
+        parse(try_from_str = parse_signal_mapping),
+        value_name = "signal",
+        about = "Forward received signals to the process",
+        long_about = "\
+            After prcs received a matching catchable signal (by default any catchable signal matches), forward it to the process.\n\
+            Signal can be used to match the specified, or all but the specified catchable signals,\n\
+            and optionally remap them to a different signal to send to the process,\n\
+            specified as '{[=]<caught signal>...|!<caught signal>...}[:<remapped signal>]'.\n\
+            Option can be repeated, in which case the first matching value is used to remap.\n\n\
+            Examples\n\
+            Forward all catchable signals to mycmd:\n\
+            prcs --signal mycmd\n\
+            When SIGUSR1 or SIGUSR2 is caught, send SIGTERM to mycmd; for any other catchable signal except SIGINT and SIGTERM, send SIGKILL to mycmd:\n\
+            prcs --signal='=SIGUSR1=SIGUSR2:SIGTERM' --signl='!SIGINT!SIGTERM:SIGKILL' mycmd\n\
+        "
+    )]
+    pub signal: Option<Vec<SignalMapping>>,
     #[clap(
         long, short,
         require_equals = true, min_values = 0,
