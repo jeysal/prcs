@@ -91,7 +91,6 @@ fn prints_error_if_command_invalid() {
         .unwrap()
         .stderr;
     let error_message = from_utf8(&stderr).unwrap();
-    assert!(error_message.to_lowercase().contains("fail"));
+    assert!(error_message.to_lowercase().contains("failed to run"));
     assert!(error_message.contains("executable-that-almost-certainly-does-not-exist"));
-    assert!(error_message.to_lowercase().contains("file"));
 }
